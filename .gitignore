@@ -117,3 +117,5 @@ dmypy.json
 
 # temp hoa add
 config/
+apps-universe/*
+stacks-universe/*

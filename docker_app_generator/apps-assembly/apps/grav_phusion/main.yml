@@ -1,0 +1,8 @@
+docker_init: ''
+docker_reqs: |
+  ADD files/grav/nginx.conf /root/docker-config/default-app-nginx.conf
+docker_core: |
+  RUN apt-get update && \
+    apt-get install -y wget unzip
+docker_expose: [80]
+docker_cmd: ''

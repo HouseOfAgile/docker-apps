@@ -1,0 +1,8 @@
+docker_init: |
+  ADD config/projects /root/projects
+  ADD config/ssh-keys /root/ssh-keys
+  ADD config/sm-config /root/.symfony-manager/sm-config
+docker_reqs: ''
+docker_core: |
+  ADD files/docker-php-apps/setup-projects.sh /etc/my_init.d/10_setup-projects.sh
+  RUN sudo chmod +x /etc/my_init.d/10_setup-projects.sh

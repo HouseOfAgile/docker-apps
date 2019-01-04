@@ -1,0 +1,69 @@
+main:
+  docker_from: 'phusion/baseimage:_PHUSION_VERSION'
+  docker_init: |
+    LABEL maintainer Meillaud Jean-Christophe (jc@houseofagile.com)
+
+    # PHP _PHP_VERSION
+    RUN export DEBIAN_FRONTEND=noninteractive && \
+      apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 4F4EA0AAE5267A6C && \
+      LC_ALL=en_US.UTF-8 add-apt-repository -y ppa:ondrej/php && \
+      apt-get update && apt-get install -y software-properties-common && \
+      apt-get update && apt-get install -y \
+      nginx \
+      git-core \
+      php_PHP_VERSION \
+      php_PHP_VERSION-fpm \
+      php_PHP_VERSION-mysql \
+      php_PHP_VERSION-imagick \
+      php_PHP_VERSION-imap \
+      php_PHP_VERSION-curl \
+      php_PHP_VERSION-cli \
+      php_PHP_VERSION-gd \
+      php_PHP_VERSION-pgsql \
+      php_PHP_VERSION-sqlite \
+      php_PHP_VERSION-common \
+      php-pear \
+      curl \
+      php_PHP_VERSION-json \
+      php_PHP_VERSION-intl \
+      python \
+      g++ \
+      make \
+      sudo && \
+      chown www-data -R /usr/share/nginx/ && \
+      echo "source ~/.bashrc">>/root/.bash_profile && \
+      curl -sSL https://raw.github.com/beaudev/bash-profile/master/install-bash-profile.sh|bash && \
+      apt-get clean && rm -rf /tmp/* /var/tmp/* && \
+      service php_PHP_VERSION-fpm start
+  docker_reqs: |
+    ADD files/hoa-phusion-baseimage/nginx-default.conf /etc/nginx/sites-available/default
+    RUN sed -i 's#%%php_fpm_sock_file%%#/run/php/php_PHP_VERSION-fpm.sock#g' /etc/nginx/sites-available/default && \
+      echo "<?php\nphpinfo();">/var/www/html/index.php
+  docker_core: |
+    # nginx and php-fpm7.1 service
+    RUN mkdir /etc/service/01_phpfpm /etc/service/02_nginx && \
+      echo "#!/usr/bin/env bash\nphp-fpm_PHP_VERSION -F -c /etc/php/_PHP_VERSION/fpm" > /etc/service/01_phpfpm/run && \
+      echo "#!/bin/sh\nnginx -g 'daemon off;'" > /etc/service/02_nginx/run && \
+      chmod +x /etc/service/01_phpfpm/run /etc/service/02_nginx/run
+  docker_cmd: 'CMD ["/sbin/my_init"]'
+  docker_expose: [8080]
+main_vars:
+  _PHUSION_VERSION: '0.11'
+  _PHP_VERSION: '7.2'
+variants:
+  - name: php5.6
+    variant_vars:
+      _PHUSION_VERSION: '0.11'
+      _PHP_VERSION: '5.6'
+  - name: php7.1
+    variant_vars:
+      _PHUSION_VERSION: '0.11'
+      _PHP_VERSION: '7.1'
+  - name: php7.2
+    variant_vars:
+      _PHUSION_VERSION: '0.11'
+      _PHP_VERSION: '7.2'
+  - name: php7.0
+    variant_vars:
+      _PHUSION_VERSION: '0.11'
+      _PHP_VERSION: '7.0'

@@ -1,0 +1,28 @@
+main:
+  docker_from: 'houseofagile/docker-nginx-php-fpm:_PHP_VERSION'
+  docker_init: |
+    MAINTAINER Meillaud Jean-Christophe (jc@houseofagile.com)
+    RUN apt-get update
+  docker_reqs: |
+    ADD files/hoa-phusion-php-fpm/nginx.conf /root/docker-config/default-app-nginx.conf
+  docker_core: |
+    RUN sudo chown www-data -R /usr/share/nginx/ && \
+      sudo mkdir -p /root/docker-config && \
+      sudo rm /etc/nginx/sites-enabled/default && \
+      sudo mkdir -p /etc/my_init.d && \
+      sudo sed -i 's#%%php_fpm_sock_file%%#/run/php/_PHP_VERSION-fpm.sock#g' /root/docker-config/default-app-nginx.conf
+  docker_cmd: 'CMD ["sudo", "/sbin/my_init"]'
+  docker_expose: [8080]
+main_vars:
+  _PHP_VERSION: php7.2
+variants:
+  - name: php5
+    variant_vars:
+      _PHP_VERSION: php5.6
+      _PHP_VERSION2: php5.8
+  - name: php7.1
+    variant_vars:
+      _PHP_VERSION: php7.1
+  - name: php7.0
+    variant_vars:
+      _PHP_VERSION: php7.0

@@ -1,0 +1,57 @@
+---
+apps_inventory:
+  # - name: pagekit
+  #   version: latest
+  #   docker_base: 'phusion-docker-php-fpm'
+  #   docker_flavors:
+  #     - 'docker-php-apps'
+
+  # - name: grav_phusion
+  #   version: latest
+  #   docker_base: 'hoa-phusion-php-fpm'
+  #   docker_flavors:
+  #     - 'docker-php-apps'
+  #     - 'php-app-manager'
+
+  - name: wordpress
+    image_name: 'houseofagile/wordpress'
+    version: latest
+    docker_base: 'hoa-phusion-php-fpm'
+    docker_flavors:
+      - 'ubuntu-hoauser'
+      - 'docker-php-apps'
+
+  # - name: sylius
+  #   version: latest
+  #   docker_base: 'hoa-phusion-php-fpm'
+  #   docker_flavors:
+  #     - 'docker-php-apps'
+
+
+  - name: docker-nginx-php-fpm
+    image_name: 'houseofagile/docker-nginx-php-fpm'
+    version: latest
+    docker_base: 'hoa-phusion-baseimage'
+    docker_flavors: []
+  # - name: mysql
+  #   version: latest
+  #   docker_base: ''
+  #   docker_flavors: []
+
+stacks_inventory:
+  # - name: grav_pure
+  #   app_main_service: grav_phusion
+  #   app_other_services: []
+
+  - name: wordpress
+    app_main_service: wordpress
+    app_other_services: []
+  #
+  # - name: docker-try-nginx
+  #   app_main_service: docker-nginx-php-fpm
+  #   app_other_services: []
+  #
+  # - name: grav_mysql
+  #   app_main_service: grav_phusion
+  #   app_other_services:
+  #     - mysql

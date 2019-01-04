@@ -1,0 +1,17 @@
+docker_init: |
+  RUN apt-get install -y pwgen \
+    mysql-client \
+    composer && \
+    composer global require wp-cli/wp-cli && \
+    echo 'export PATH="$PATH:$HOME/.composer/vendor/bin"' >> ~/.bashrc
+docker_reqs: |
+  COPY files/wordpress/nginx/restrictions.conf /etc/nginx/
+  COPY files/wordpress/nginx/default-wordpress-nginx.conf /root/
+  ADD files/wordpress/init_wordpress.sh /etc/my_init.d/init_wordpress.sh
+  ADD files/wordpress/utils_wordpress.sh /root/utils_wordpress.sh
+docker_core: |
+  RUN sudo sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf && \
+    sudo chmod +x /etc/my_init.d/init_wordpress.sh
+
+docker_expose: [80]
+docker_cmd: ''

@@ -1,0 +1,4 @@
+ports:
+  - "8000:80"
+networks:
+  - toto 

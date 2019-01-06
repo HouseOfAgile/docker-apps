@@ -4,13 +4,14 @@ main:
     MAINTAINER Meillaud Jean-Christophe (jc@houseofagile.com)
     RUN apt-get update
   docker_reqs: |
-    ADD files/hoa-phusion-php-fpm/nginx.conf /root/docker-config/default-app-nginx.conf
+    ADD files/hoa-phusion-php-fpm/nginx.conf /srv/nginx-config/default-app-nginx.conf
   docker_core: |
     RUN sudo chown www-data -R /usr/share/nginx/ && \
-      sudo mkdir -p /root/docker-config && \
+      sudo mkdir -p /srv/nginx-config && \
       sudo rm /etc/nginx/sites-enabled/default && \
       sudo mkdir -p /etc/my_init.d && \
-      sudo sed -i 's#%%php_fpm_sock_file%%#/run/php/_PHP_VERSION-fpm.sock#g' /root/docker-config/default-app-nginx.conf
+      sudo sed -i 's#%%php_fpm_sock_file%%#/run/php/_PHP_VERSION-fpm.sock#g' /srv/nginx-config/default-app-nginx.conf && \
+      echo "sed -i 's#%%php_fpm_sock_file%%#/run/php/_PHP_VERSION-fpm.sock#g'" | sudo tee /srv/nginx-config/update_nginx_conf
   docker_cmd: 'CMD ["sudo", "/sbin/my_init"]'
   docker_expose: [8080]
 main_vars:

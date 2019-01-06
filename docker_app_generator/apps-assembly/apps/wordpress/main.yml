@@ -3,12 +3,14 @@ docker_init: |
     mysql-client \
     composer && \
     composer global require wp-cli/wp-cli && \
-    echo 'export PATH="$PATH:$HOME/.composer/vendor/bin"' >> ~/.bashrc
+    echo 'export PATH="$PATH:$HOME/.composer/vendor/bin"' >> ~/.bashrc && \
+    mkdir -p /srv/nginx-config/ /srv/wordpress /srv/projects
 docker_reqs: |
   COPY files/wordpress/nginx/restrictions.conf /etc/nginx/
-  COPY files/wordpress/nginx/default-wordpress-nginx.conf /root/
+  COPY files/wordpress/nginx/default-wordpress-nginx.conf /srv/nginx-config/
   ADD files/wordpress/init_wordpress.sh /etc/my_init.d/init_wordpress.sh
-  ADD files/wordpress/utils_wordpress.sh /root/utils_wordpress.sh
+  ADD files/wordpress/utils_wordpress.sh /srv/wordpress/utils_wordpress.sh
+  ADD config/projects /srv/projects
 docker_core: |
   RUN sudo sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf && \
     sudo chmod +x /etc/my_init.d/init_wordpress.sh

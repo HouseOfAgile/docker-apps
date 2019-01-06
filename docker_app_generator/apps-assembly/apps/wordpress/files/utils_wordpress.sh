@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function install_wordpress() {
-  curl -SsL http://wordpress.org/latest.tar.gz -o /root/wordpress/latest.tar.gz
+  curl -SsL http://wordpress.org/latest.tar.gz -o /srv/wordpress/latest.tar.gz
 }
 
 
@@ -16,7 +16,7 @@ function deploy_wordpress() {
   wp_host=${3:-"localhost"}
   if [ ! -d /usr/share/nginx/$wp_name -o "$WP_FORCE_INSTALL" = true ]; then
     mkdir -p /usr/share/nginx/$wp_name
-    tar --strip-components=1 -xzf /root/wordpress/latest.tar.gz -C /usr/share/nginx/$wp_name
+    tar --strip-components=1 -xzf /srv/wordpress/latest.tar.gz -C /usr/share/nginx/$wp_name
   fi
   if [ ! -f /usr/share/nginx/$wp_name/wp-config.php ]; then
     # mysql username should be shorter than 15 characters
@@ -59,7 +59,7 @@ if ( count( \$plugins ) === 0 ) {
   }
 }
 ENDL
-    cat /root/default-wordpress-nginx.conf | sed "s/__project_name__/$wp_name/g;s#__project_path__#/usr/share/nginx/$wp_name#g;s/__project_hosts__/$wp_host/g"  > /etc/nginx/sites-available/project_$wp_name.conf
+    cat /srv/nginx-config/default-wordpress-nginx.conf | sed "s/__project_name__/$wp_name/g;s#__project_path__#/usr/share/nginx/$wp_name#g;s/__project_hosts__/$wp_host/g"  > /etc/nginx/sites-available/project_$wp_name.conf
     ln -s /etc/nginx/sites-available/project_$wp_name.conf /etc/nginx/sites-enabled/project_$wp_name.conf
     service nginx reload
 

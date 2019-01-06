@@ -19,7 +19,6 @@ apps_inventory:
     docker_base: 'hoa-phusion-php-fpm'
     docker_flavors:
       - 'ubuntu-hoauser'
-      - 'docker-php-apps'
 
   # - name: sylius
   #   version: latest

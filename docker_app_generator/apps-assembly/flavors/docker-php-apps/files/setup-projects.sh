@@ -6,12 +6,6 @@ SM_CONF_DIR=/root/.symfony-manager
 
 source ~/.bash-profile.d/bash-profile
 
-# Copy ssh keys if there are presents
-if [ -d "/root/ssh-keys" -a "$(ls /root/ssh-keys)" ]; then
-  mkdir -p /root/.ssh
-  cp /root/ssh-keys/* /root/.ssh
-fi
-
 for file in `find $SM_CONF_DIR/sm-config/ -type f -printf "%f\n" | egrep "^sm-config"`
 do
   source $SM_CONF_DIR/sm-config/$file

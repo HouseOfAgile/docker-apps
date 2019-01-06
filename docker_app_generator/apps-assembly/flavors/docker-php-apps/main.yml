@@ -1,8 +1,13 @@
 docker_init: |
+  RUN mkdir -p /srv/ssh-keys /root/projects
   ADD config/projects /root/projects
-  ADD config/ssh-keys /root/ssh-keys
+  ADD config/ssh-keys /srv/ssh-keys
   ADD config/sm-config /root/.symfony-manager/sm-config
 docker_reqs: ''
 docker_core: |
+  # Copy ssh keys for root access if there are presents
+  RUN [ -d "/srv/ssh-keys" -a "$(ls /srv/ssh-keys)" ] &&  \
+    mkdir -p /root/.ssh && \
+    cp /srv/ssh-keys/* /home/hoauser/.ssh
   ADD files/docker-php-apps/setup-projects.sh /etc/my_init.d/10_setup-projects.sh
   RUN sudo chmod +x /etc/my_init.d/10_setup-projects.sh

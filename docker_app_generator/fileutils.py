@@ -42,12 +42,13 @@ def generate_app_dockerfile(path_app, docker_stack, docker_base, docker_flavors,
     ).dump(path_app + '/Dockerfile' + ('.' + variant_name if variant_name else ''))
 
 
-def generate_build_shell(path_app, docker_image_name, docker_bases):
+def generate_build_shell(path_app, docker_image_name, docker_bases, settings):
     print('Shell config\npath_app: {}\docker_image_name: {}\docker_bases: {}\n'.format(
         path_app, docker_image_name, docker_bases))
 
     template = env.get_template('build.sh.j2')
     template.stream(
+        settings=settings,
         docker_image_name=docker_image_name,
         docker_bases=docker_bases,
     ).dump(path_app + '/build.sh')

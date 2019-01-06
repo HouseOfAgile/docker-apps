@@ -7,9 +7,10 @@ do
   this_image_name={{ docker_image_name }}"$([ ! -z "$variant" ] && echo ":"$variant || echo '')"
   echo -e "Building $this_image_name..."
   docker build -t $this_image_name . \
-  -f Dockerfile$([ ! -z "$variant" ] && echo "."$variant || echo '') >>output.$variant 2>&1
+  -f Dockerfile$([ ! -z "$variant" ] && echo "."$variant || echo '') >output$([ ! -z "$variant" ] && echo "."$variant || echo '') 2>&1
   if [ $? == 0 ]; then
-    list_ops=( "  Run it with: docker run -d -P $this_image_name" "${list_ops[@]}")
+    docker_network="{{ (' --network='+settings['default_docker_network']+' ') if settings['default_docker_network'] else '' }}"
+    list_ops=( "  Run it with: docker run ${docker_network}-d -P $this_image_name" "${list_ops[@]}")
     list_ops=( "Image $this_image_name successfully created" "${list_ops[@]}")
   else
     list_ops=( "Image $this_image_name was not created, check output (cat output$([ ! -z "$variant" ] && echo "."$variant || echo '')) " "${list_ops[@]}")

@@ -47,7 +47,7 @@ def generate_docker_app(myconfig):
                 image_variants = [v['name']
                                   for v in docker_bases['variants'] if v['name'] != 'main']
                 image_name = app_config['image_name'] if app_config['image_name'] else app_config['name']
-                fu.generate_build_shell(path_app, image_name, image_variants)
+                fu.generate_build_shell(path_app, image_name, image_variants, settings)
         else:
             print('base is empty')
 

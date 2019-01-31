@@ -4,7 +4,7 @@ docker_init: |
     composer && \
     composer global require wp-cli/wp-cli && \
     echo 'export PATH="$PATH:$HOME/.composer/vendor/bin"' >> ~/.bashrc && \
-    mkdir -p /srv/nginx-config/ /srv/wordpress /srv/projects
+    mkdir -p /srv/{nginx-config,wordpress,projects,root-sites}
 docker_reqs: |
   COPY files/wordpress/nginx/restrictions.conf /etc/nginx/
   COPY files/wordpress/nginx/default-wordpress-nginx.conf /srv/nginx-config/

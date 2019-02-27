@@ -1,11 +1,13 @@
 # docker-apps [WIP]
 
-Generator for various standard stack in docker, first attempted to do it with ansible, it seems more efficient to just generate stacks and apps with pure python.
+Generator for various standard stack in docker, first attempted to do it with ansible, it seems more efficient to just generate apps and stacks with pure python.
 
 ## Purpose
 
 The goal of this simple generator is to be able to generate images for various apps easily, and offer a flexible architecture to build tailored custom docker images.
 It is mainly useful to quickly deploy simple apps and/or work on dev version of those ones.
+
+There are apps and stacks, apps are usually some app/software that are deployed on top of some systems. stacks are basically relying on docker-compose.
 
 ## Requirements
 

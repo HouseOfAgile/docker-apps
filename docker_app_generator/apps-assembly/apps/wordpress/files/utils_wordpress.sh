@@ -1,5 +1,7 @@
 #!/bin/bash
 
+WP_ROOT_PATH=${WP_ROOT_PATH}
+
 function install_wordpress() {
   curl -SsL http://wordpress.org/latest.tar.gz -o /srv/wordpress/latest.tar.gz
 }
@@ -14,11 +16,12 @@ function deploy_wordpress() {
   wp_name=$1
   wp_lang=${2:-"EN_en"}
   wp_host=${3:-"localhost"}
-  if [ ! -d /srv/root-sites/$wp_name -o "$WP_FORCE_INSTALL" = true ]; then
-    mkdir -p /srv/root-sites/$wp_name
-    tar --strip-components=1 -xzf /srv/wordpress/latest.tar.gz -C /srv/root-sites/$wp_name
+  if [ ! -d ${WP_ROOT_PATH}/$wp_name -o "$WP_FORCE_INSTALL" = true ]; then
+    # deal with version
+    mkdir -p ${WP_ROOT_PATH}/$wp_name
+    tar --strip-components=1 -xzf /srv/wordpress/latest.tar.gz -C ${WP_ROOT_PATH}/$wp_name
   fi
-  if [ ! -f /srv/root-sites/$wp_name/wp-config.php ]; then
+  if [ ! -f ${WP_ROOT_PATH}/$wp_name/wp-config.php ]; then
     # mysql username should be shorter than 15 characters
     short_name=`echo $wp_name |cut -c1-11`
     WORDPRESS_DB_NAME="wp_db_$short_name"
@@ -38,15 +41,15 @@ function deploy_wordpress() {
     /'SECURE_AUTH_SALT'/s/put your unique phrase here/`pwgen -c -n -1 65`/
     /'LOGGED_IN_SALT'/s/put your unique phrase here/`pwgen -c -n -1 65`/
     /'NONCE_SALT'/s/put your unique phrase here/`pwgen -c -n -1 65`/
-    /Happy blogging/s/$/\nif (isset(\$_SERVER['HTTP_X_FORWARDED_PROTO']) \&\& \$_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')\n  \$_SERVER['HTTPS'] = 'on';\n/" /srv/root-sites/$wp_name/wp-config-sample.php > /srv/root-sites/$wp_name/wp-config.php
+    /Happy blogging/s/$/\nif (isset(\$_SERVER['HTTP_X_FORWARDED_PROTO']) \&\& \$_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')\n  \$_SERVER['HTTPS'] = 'on';\n/" ${WP_ROOT_PATH}/$wp_name/wp-config-sample.php > ${WP_ROOT_PATH}/$wp_name/wp-config.php
 
     # Download nginx helper plugin
     #curl -O `curl -i -s http://wordpress.org/plugins/nginx-helper/ | egrep -o "http://downloads.wordpress.org/plugin/[^']+"`
-    #unzip -o nginx-helper.*.zip -d /srv/root-sites/$wp_name/wp-content/plugins
-    #chown -R www-data:www-data /srv/root-sites/$wp_name/wp-content/plugins/nginx-helper
+    #unzip -o nginx-helper.*.zip -d ${WP_ROOT_PATH}/$wp_name/wp-content/plugins
+    #chown -R www-data:www-data ${WP_ROOT_PATH}/$wp_name/wp-content/plugins/nginx-helper
 
     # Activate nginx plugin and set up pretty permalink structure once logged in
-    cat << ENDL >> /srv/root-sites/$wp_name/wp-config.php
+    cat << ENDL >> ${WP_ROOT_PATH}/$wp_name/wp-config.php
 \$plugins = get_option( 'active_plugins' );
 if ( count( \$plugins ) === 0 ) {
   require_once(ABSPATH .'/wp-admin/includes/plugin.php');
@@ -54,17 +57,17 @@ if ( count( \$plugins ) === 0 ) {
   \$pluginsToActivate = array( 'nginx-helper/nginx-helper.php' );
   foreach ( \$pluginsToActivate as \$plugin ) {
   if ( !in_array( \$plugin, \$plugins ) ) {
-    activate_plugin( '/srv/root-sites/www/wp-content/plugins/' . \$plugin );
+    activate_plugin( '${WP_ROOT_PATH}/www/wp-content/plugins/' . \$plugin );
   }
   }
 }
 ENDL
     # update nginx configuration
-    cat /srv/nginx-config/default-wordpress-nginx.conf | sed "s/__project_name__/$wp_name/g;s#__project_path__#/srv/root-sites/$wp_name#g;s/__project_hosts__/$wp_host/g"  > /etc/nginx/sites-available/project_$wp_name.conf
+    cat /srv/nginx-config/default-wordpress-nginx.conf | sed "s/__project_name__/$wp_name/g;s#__project_path__#${WP_ROOT_PATH}/$wp_name#g;s/__project_hosts__/$wp_host/g"  > /etc/nginx/sites-available/project_$wp_name.conf
     ln -s /etc/nginx/sites-available/project_$wp_name.conf /etc/nginx/sites-enabled/project_$wp_name.conf
     service nginx reload
 
-    chown -R www-data:www-data /srv/root-sites/$wp_name
+    chown -R www-data:www-data ${WP_ROOT_PATH}/$wp_name
 
     MYSQL_USER=${MYSQL_ROOT_USER:-"root"}
     MYSQL_PASSWORD=${MYSQL_ROOT_PASSWORD:-""}
@@ -87,4 +90,23 @@ ENDL
 
 function update_wordpress() {
   true
+}
+
+function backup_wordpress(){
+  if [ -z "$1" ]; then
+    echo -e "\nPlease call '$0 <wp_name>' to run this command!\n"
+    exit 1
+  fi
+  wp_path=$1
+  if [ -d "${WP_ROOT_PATH}/$wp_path" ]; then
+    echo 'Backup installed wordpress in $wp_path'
+    tar --create --gzip -vv --directory="${WP_ROOT_PATH}/$wp_path" --file="/srv/backups/backup_`date '+%Y%m%d'`.tar.gz" "./"
+
+    echo 'creating database dump'
+    mysqldump -h $MYSQL_ENV_MYSQL_HOST --add-drop-table -u$MYSQL_ENV_MYSQL_USER -p $MYSQL_ENV_MYSQL_DATABASE --password=$MYSQL_ENV_MYSQL_PASSWORD | bzip2 -c > /backups/backup_`date '+%Y%m%d'`.sql.bz2
+  fi
+}
+
+function restore_wordpress(){
+
 }

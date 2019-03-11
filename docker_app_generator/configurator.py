@@ -32,7 +32,7 @@ def load_stack_config(name, type):
 def load_flavors_config(flavors, type='app'):
     config_dict = {}
     for flavor in flavors:
-        print('Loading flavor {}'.format(flavor))
+        # print('Loading flavor {}'.format(flavor))
         config_dict[flavor] = fu.load_config_file(
             settings.assembly_path + '/flavors/' + flavor + '/' + ('main' if type == 'app' else 'service') + '.yml')
     return config_dict

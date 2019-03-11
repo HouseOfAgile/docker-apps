@@ -48,6 +48,7 @@ def generate_docker_app(myconfig):
                                   for v in docker_bases['variants'] if v['name'] != 'main']
                 image_name = app_config['image_name'] if app_config['image_name'] else app_config['name']
                 fu.generate_build_shell(path_app, image_name, image_variants, settings)
+                print("Generated docker apps for %s:%s" % (app_config['name'], variant['name']))
         else:
             print('base is empty')
 
@@ -63,7 +64,7 @@ def generate_docker_app(myconfig):
             fu.copy_files(assembly_path + '/flavors/' + flavor + '/files',
                           path_app + '/files/' + flavor)
 
-        pp.pprint(myconfig['assemblies'][app_config['name']])
+        # pp.pprint(myconfig['assemblies'][app_config['name']])
 
     for stack_config in myconfig['stacks_inventory']:
         stack_path = settings.stacks_path + '/' + stack_config['name']

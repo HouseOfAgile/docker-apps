@@ -31,8 +31,8 @@ def copy_files(from_path, to_path):
 
 
 def generate_app_dockerfile(path_app, docker_stack, docker_base, docker_flavors, variant_name=None):
-    print('Dockerfile config {}\ndocker_base: {}\ndocker_stack: {}\n'.format(
-        path_app, docker_base, docker_stack))
+    # print('Dockerfile config {}\ndocker_base: {}\ndocker_stack: {}\n'.format(
+        # path_app, docker_base, docker_stack))
 
     template = env.get_template('Dockerfile.j2')
     template.stream(
@@ -43,8 +43,8 @@ def generate_app_dockerfile(path_app, docker_stack, docker_base, docker_flavors,
 
 
 def generate_build_shell(path_app, docker_image_name, docker_bases, settings):
-    print('Shell config\npath_app: {}\docker_image_name: {}\docker_bases: {}\n'.format(
-        path_app, docker_image_name, docker_bases))
+    # print('Shell config\npath_app: {}\docker_image_name: {}\docker_bases: {}\n'.format(
+        # path_app, docker_image_name, docker_bases))
 
     template = env.get_template('build.sh.j2')
     template.stream(

@@ -14,7 +14,7 @@ There are apps and stacks, apps are usually some app/software that are deployed 
 This generator is based on python3.
 
 Install dependencies with
-    pip install -f requirements.txt
+    pip install -r requirements.txt
 
 
 ## How it works

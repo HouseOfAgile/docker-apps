@@ -32,6 +32,15 @@ apps_inventory:
     version: latest
     docker_base: 'hoa-phusion-baseimage'
     docker_flavors: []
+
+  - name: docker-nginx-symfony
+    image_name: 'houseofagile/docker-nginx-symfony'
+    version: latest
+    docker_base: 'hoa-phusion-symfony'
+    docker_flavors:
+      - 'docker-php-apps'
+      - 'ubuntu-hoauser'
+      
   # - name: mysql
   #   version: latest
   #   docker_base: ''

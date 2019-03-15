@@ -7,12 +7,11 @@ if [ -f /srv/nginx-config/update_nginx_conf ]; then
   echo "$(cat /srv/nginx-config/update_nginx_conf) /srv/nginx-config/default-wordpress-nginx.conf"| bash
 fi
 
-install_wordpress
 if [ -d /srv/projects/ ]; then
   for wp_project in `find /srv/projects/ -not -path '*/\.*' -type f -printf "%f\n"| egrep "^wp-config"`
   do
     # TODO install or update or restore
     source /srv/projects/$wp_project
-    deploy_wordpress $WP_NAME ${WP_LANG:-"ES_es"} ${WP_HOST:-"localhost"}
+    deploy_wordpress $WP_NAME ${WP_LANG:-"ES_es"} ${WP_HOST:-"localhost"} ${WP_VERSION}
   done
 fi

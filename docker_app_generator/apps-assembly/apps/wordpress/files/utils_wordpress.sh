@@ -2,8 +2,19 @@
 
 WP_ROOT_PATH=${WP_ROOT_PATH}
 
-function install_wordpress() {
-  curl -SsL http://wordpress.org/latest.tar.gz -o /srv/wordpress/latest.tar.gz
+# update the wordpress archive if not present and return the path where
+function retrieve_wordpress() {
+  if [ -z "$1" ]; then
+    wp_version_name=latest
+  else
+    wp_version_name=wordpress-${1}
+  fi
+  if [ ! -f /srv/wordpress/${wp_version_name}.tar.gz ]; then
+    curl -SsL http://wordpress.org/${wp_version_name}.tar.gz -o /srv/wordpress/${wp_version_name}.tar.gz
+  fi
+
+  # return the file name
+  echo "/srv/wordpress/${wp_version_name}.tar.gz"
 }
 
 
@@ -16,10 +27,13 @@ function deploy_wordpress() {
   wp_name=$1
   wp_lang=${2:-"EN_en"}
   wp_host=${3:-"localhost"}
+  wp_version=${4}
   if [ ! -d ${WP_ROOT_PATH}/$wp_name -o "$WP_FORCE_INSTALL" = true ]; then
+    wp_version_file=`retrieve_wordpress $wp_version`
+
     # deal with version
     mkdir -p ${WP_ROOT_PATH}/$wp_name
-    tar --strip-components=1 -xzf /srv/wordpress/latest.tar.gz -C ${WP_ROOT_PATH}/$wp_name
+    tar --strip-components=1 -xzf ${wp_version_file} -C ${WP_ROOT_PATH}/$wp_name
   fi
   if [ ! -f ${WP_ROOT_PATH}/$wp_name/wp-config.php ]; then
     # mysql username should be shorter than 15 characters
@@ -108,5 +122,5 @@ function backup_wordpress(){
 }
 
 function restore_wordpress(){
-
+  true
 }

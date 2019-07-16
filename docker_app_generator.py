@@ -1,6 +1,6 @@
 import argparse
-from docker_app_generator.configurator import configure_docker_apps
-from docker_app_generator.generator import generate_docker_app
+from docker_app_generator import configure_docker_apps
+from docker_app_generator import generate_docker_app
 import sys
 
 if __name__ == "__main__":

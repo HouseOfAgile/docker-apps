@@ -3,10 +3,10 @@ docker_init: |
     groupadd hoauser && \
     usermod -aG hoauser hoauser && \
     echo "hoauser ALL=(ALL) NOPASSWD:ALL">/etc/sudoers.d/90-cloud-init-users
-  USER hoauser
 docker_reqs: ''
 docker_core: |
   # Copy ssh keys if there are presents
   RUN if [ -d "/srv/ssh-keys" -a "$(ls /srv/ssh-keys)" ]; then  \
     mkdir -p /home/hoauser/.ssh && \
     cp /srv/ssh-keys/* /home/hoauser/.ssh; fi
+docker_post: ''

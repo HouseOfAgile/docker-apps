@@ -29,6 +29,7 @@ main:
       python \
       g++ \
       make \
+      unzip \
       sudo && \
       chown www-data -R /usr/share/nginx/ && \
       echo "source ~/.bashrc">>/root/.bash_profile && \
@@ -45,6 +46,7 @@ main:
       echo "#!/usr/bin/env bash\nphp-fpm_PHP_VERSION -F -c /etc/php/_PHP_VERSION/fpm" > /etc/service/01_phpfpm/run && \
       echo "#!/bin/sh\nnginx -g 'daemon off;'" > /etc/service/02_nginx/run && \
       chmod +x /etc/service/01_phpfpm/run /etc/service/02_nginx/run
+  docker_post: ''
   docker_cmd: 'CMD ["/sbin/my_init"]'
   docker_expose: [8080]
 main_vars:

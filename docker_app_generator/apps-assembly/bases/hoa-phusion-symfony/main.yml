@@ -15,6 +15,7 @@ main:
     RUN sudo sed -i 's#%%php_fpm_sock_file%%#/run/php/_PHP_VERSION-fpm.sock#g' /srv/nginx-config/default-app-nginx.conf
 
   docker_cmd: 'CMD ["/sbin/my_init"]'
+  docker_post: ''
   docker_expose: [80]
 main_vars:
   _PHP_VERSION: 'php7.2'

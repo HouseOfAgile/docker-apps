@@ -11,3 +11,4 @@ docker_core: |
     cp /srv/ssh-keys/* /root/.ssh) || true
   ADD files/docker-php-apps/setup-projects.sh /etc/my_init.d/10_setup-projects.sh
   RUN sudo chmod +x /etc/my_init.d/10_setup-projects.sh
+docker_post: ''

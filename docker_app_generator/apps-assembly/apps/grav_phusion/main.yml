@@ -6,3 +6,4 @@ docker_core: |
     apt-get install -y wget unzip
 docker_expose: [80]
 docker_cmd: ''
+docker_post: ''

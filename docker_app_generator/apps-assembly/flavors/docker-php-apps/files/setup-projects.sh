@@ -42,7 +42,7 @@ do
           git clone $application_scmurl .
           # copy project specific files
           [ -d "/root/projects/$application_projectname" ] && cp -R /root/projects/$application_projectname/* $application_install_path
-          [ ${application_do_install:-true} == true ] && COMPOSER_HOME=$application_install_path $SM_CONF_DIR/symfony_manager.sh -l $SM_CONF_DIR/sm-config/$file -fdu install || true
+          [ ${application_do_sm_install:-true} == true ] && COMPOSER_HOME=$application_install_path $SM_CONF_DIR/symfony_manager.sh -l $SM_CONF_DIR/sm-config/$file -fdu install || true
           )
           ;;
       *)

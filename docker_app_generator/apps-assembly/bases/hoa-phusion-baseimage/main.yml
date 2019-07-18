@@ -20,6 +20,8 @@ main:
       php_PHP_VERSION-cli \
       php_PHP_VERSION-gd \
       php_PHP_VERSION-pgsql \
+      php_PHP_VERSION-xml \
+      php_PHP_VERSION-mbstring \
       php_PHP_VERSION-sqlite \
       php_PHP_VERSION-common \
       php-pear \
@@ -48,7 +50,7 @@ main:
       chmod +x /etc/service/01_phpfpm/run /etc/service/02_nginx/run
   docker_post: ''
   docker_cmd: 'CMD ["/sbin/my_init"]'
-  docker_expose: [8080]
+  docker_expose: '[8080]'
 main_vars:
   _PHUSION_VERSION: '0.11'
   _PHP_VERSION: '7.2'

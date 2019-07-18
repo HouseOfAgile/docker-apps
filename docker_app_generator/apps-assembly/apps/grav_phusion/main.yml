@@ -4,6 +4,6 @@ docker_reqs: |
 docker_core: |
   RUN apt-get update && \
     apt-get install -y wget unzip
-docker_expose: [80]
+docker_expose: '[80]'
 docker_cmd: ''
 docker_post: ''

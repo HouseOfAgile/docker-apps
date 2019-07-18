@@ -15,6 +15,6 @@ docker_core: |
   RUN sudo sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf && \
     sudo chmod +x /etc/my_init.d/20_init_wordpress.sh
 
-docker_expose: [80]
+docker_expose: '[80]'
 docker_cmd: ''
 docker_post: ''

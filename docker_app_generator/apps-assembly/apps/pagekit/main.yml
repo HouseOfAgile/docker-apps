@@ -4,6 +4,6 @@ docker_core: |
   RUN apt-get update && \
     apt-get install -y wget unzip
   ADD files/pagekit/nginx.conf /root/docker-config/default-app-nginx.conf
-docker_expose: [80]
+docker_expose: '[80]'
 docker_cmd: ''
 docker_post: ''

@@ -1,4 +1,7 @@
 ---
+parameters:
+  depl_user: hoauser
+
 apps_inventory:
   # - name: pagekit
   #   version: latest

@@ -21,8 +21,10 @@ Install dependencies with
 
 ## How it works
 
-Edit the myconfig.yml file to define your recipes for both apps and stacks, they are refereing either bases, apsp or flavors. Each recipe could have one base, one main app and several flavors. Flavors are common docker set of commands that should be independant from bases and apps as much as possible.
+Edit the myconfig.yml file to define your recipes for both apps and stacks, they are refereing either bases, apps or flavors. Each recipe could have one base, one main app and several flavors. Flavors are common docker set of commands that should be independant from bases and apps as much as possible.
 
+
+Global parameter could be used in the recipes, suround your variable with #<variable>#, then the parser should replace them with the values from `myconfig.yml` file under parameters key.
 License
 -------
 

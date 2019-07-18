@@ -3,6 +3,7 @@ import yaml
 import os.path
 import pkg_resources
 from distutils.dir_util import copy_tree
+import pprint
 
 from jinja2 import Environment, PackageLoader, select_autoescape
 
@@ -14,13 +15,13 @@ env = Environment(
     autoescape=select_autoescape(['html', 'xml'])
 )
 
+pp = pprint.PrettyPrinter(indent=4)
 
 def load_config_file(filename):
     if os.path.exists(pkg_resources.resource_filename(resource_package, filename)):
         return yaml.load(pkg_resources.resource_string(resource_package, filename))
     else:
         return []
-
 
 def create_app_structure(path_app):
     bf.mkdir_p(path_app)

@@ -99,8 +99,9 @@ def generate_docker_app(myconfig):
 def update_parameters(yaml_dict, parameters):
     if(parameters):
         for element in yaml_dict:
-            for parameter in parameters:
-                yaml_dict[element] = yaml_dict[element].replace(
-                    '#'+parameter+'#', parameters[parameter]) 
+            if element != 'docker_expose':
+                for parameter in parameters:
+                    yaml_dict[element] = yaml_dict[element].replace(
+                        '#'+parameter+'#', parameters[parameter]) 
 
     return yaml_dict

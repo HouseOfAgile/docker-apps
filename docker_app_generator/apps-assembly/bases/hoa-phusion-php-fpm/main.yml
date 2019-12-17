@@ -1,5 +1,5 @@
 main:
-  docker_from: 'houseofagile/docker-nginx-php-fpm:_PHP_VERSION'
+  docker_from: "houseofagile/docker-nginx-php-fpm:_PHP_VERSION"
   docker_init: |
     MAINTAINER Meillaud Jean-Christophe (jc@houseofagile.com)
     RUN apt-get update
@@ -12,9 +12,9 @@ main:
       sudo mkdir -p /etc/my_init.d && \
       sudo sed -i 's#%%php_fpm_sock_file%%#/run/php/_PHP_VERSION-fpm.sock#g' /srv/nginx-config/default-app-nginx.conf && \
       echo "sed -i 's#%%php_fpm_sock_file%%#/run/php/_PHP_VERSION-fpm.sock#g'" | sudo tee /srv/nginx-config/update_nginx_conf
-  docker_post: ''
+  docker_post: ""
   docker_cmd: 'CMD ["sudo", "/sbin/my_init"]'
-  docker_expose: '[8080]'
+  docker_expose: [8080]
 main_vars:
   _PHP_VERSION: php7.2
 variants:

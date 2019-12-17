@@ -16,7 +16,7 @@ main:
 
   docker_cmd: 'CMD ["/sbin/my_init"]'
   docker_post: ''
-  docker_expose: '[80]'
+docker_expose: [80]
 main_vars:
   _PHP_VERSION: 'php7.2'
 variants:

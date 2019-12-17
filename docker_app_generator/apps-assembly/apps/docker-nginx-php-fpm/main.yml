@@ -1,6 +1,6 @@
 docker_init: ''
 docker_reqs: ''
 docker_core: ''
-docker_expose: '[80]'
+docker_expose: [80]
 docker_cmd: ''
 docker_post: ''

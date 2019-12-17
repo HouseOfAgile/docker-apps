@@ -50,7 +50,7 @@ main:
       chmod +x /etc/service/01_phpfpm/run /etc/service/02_nginx/run
   docker_post: ''
   docker_cmd: 'CMD ["/sbin/my_init"]'
-  docker_expose: '[8080]'
+  docker_expose: [8080]
 main_vars:
   _PHUSION_VERSION: '0.11'
   _PHP_VERSION: '7.2'

@@ -10,7 +10,7 @@ for file in `find $SM_CONF_DIR/sm-config/ -type f -printf "%f\n" | egrep "^sm-co
 do
   source $SM_CONF_DIR/sm-config/$file
   ### highly dependant
-  cat /root/docker-config/default-app-nginx.conf | sed "s/__project_name__/$application_projectname/g;s#__project_path__#$application_install_path#g;s/__project_hosts__/$application_host/g"  > /etc/nginx/sites-available/project_$application_projectname.conf
+  cat /srv/nginx-config/default-app-nginx.conf | sed "s/__project_name__/$application_projectname/g;s#__project_path__#$application_install_path#g;s/__project_hosts__/$application_host/g"  > /etc/nginx/sites-available/project_$application_projectname.conf
   [ -e /etc/nginx/sites-enabled/project_$application_projectname.conf ] && rm /etc/nginx/sites-enabled/project_$application_projectname.conf
   ln -s /etc/nginx/sites-available/project_$application_projectname.conf /etc/nginx/sites-enabled/project_$application_projectname.conf
   project_name=${file/sm-config-}
@@ -39,8 +39,14 @@ do
           (
           set -x
           cd $application_install_path
-          git clone $application_scmurl .
-          # copy project specific files
+          if [ "$(ls -A $application_install_path)" ]; then
+            # It seems we already have the app, so we do nothing
+            true
+          else
+            # lets try to check out the scm
+            git clone $application_scmurl .
+          fi
+          # copy project specific files (override)
           [ -d "/root/projects/$application_projectname" ] && cp -R /root/projects/$application_projectname/* $application_install_path
           [ ${application_do_sm_install:-true} == true ] && COMPOSER_HOME=$application_install_path $SM_CONF_DIR/symfony_manager.sh -l $SM_CONF_DIR/sm-config/$file -fdu install || true
           )
@@ -49,6 +55,5 @@ do
         true
       ;;
   esac
-  chown www-data -R $application_install_path
 
 done

@@ -9,12 +9,12 @@ apps_inventory:
   #   docker_flavors:
   #     - 'docker-php-apps'
 
-  # - name: grav_phusion
-  #   version: latest
-  #   docker_base: 'hoa-phusion-php-fpm'
-  #   docker_flavors:
-  #     - 'docker-php-apps'
-  #     - 'php-app-manager'
+  - name: grav_phusion
+    version: latest
+    docker_base: 'hoa-phusion-php-fpm'
+    docker_flavors:
+      - 'docker-php-apps'
+      - 'php-app-manager'
 
   - name: wordpress
     image_name: 'houseofagile/wordpress'
@@ -44,10 +44,12 @@ apps_inventory:
       - 'docker-php-apps'
       - 'ubuntu-hoauser'
       
-  # - name: mysql
-  #   version: latest
-  #   docker_base: ''
-  #   docker_flavors: []
+  - name: mysql
+    version: latest
+    docker_base: 'mysql'
+    docker_flavors: []
+
+services_inventory:
 
 stacks_inventory:
   # - name: grav_pure
@@ -62,7 +64,7 @@ stacks_inventory:
   #   app_main_service: docker-nginx-php-fpm
   #   app_other_services: []
   #
-  # - name: grav_mysql
-  #   app_main_service: grav_phusion
-  #   app_other_services:
-  #     - mysql
+  - name: grav_mysql
+    app_main_service: grav_phusion
+    app_other_services:
+      - mysql

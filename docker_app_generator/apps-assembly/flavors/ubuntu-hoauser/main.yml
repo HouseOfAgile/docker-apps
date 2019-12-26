@@ -3,10 +3,11 @@ docker_init: |
     groupadd #depl_user# && \
     usermod -aG #depl_user# #depl_user# && \
     echo "#depl_user# ALL=(ALL) NOPASSWD:ALL">/etc/sudoers.d/90-cloud-init-users
+  ADD config/ubuntu-hoauser/ssh-keys /srv/ssh-keys
 docker_reqs: ''
 docker_core: |
   # Copy ssh keys if there are presents
-  RUN if [ -d "/srv/ssh-keys" -a "$(ls /srv/ssh-keys)" ]; then  \
+  RUN [ -d "/srv/ssh-keys" ] && if [ "$(ls /srv/ssh-keys)" ]; then  \
     mkdir -p /home/#depl_user#/.ssh && \
-    cp /srv/ssh-keys/* /home/#depl_user#/.ssh; fi
+    cp /srv/ssh-keys/* /home/#depl_user#/.ssh; fi || true
 docker_post: ''

@@ -39,7 +39,7 @@ while true; do
     esac
 done
 
-all_variants="'' {{ docker_bases|join(' ') }}"
+all_variants="{{ docker_bases|join(' ') }}"
 
 list_ops=()
 if [[ ! "${variant}" == "" ]]; then
@@ -57,7 +57,7 @@ do
   this_image_name={{ docker_image_name }}"$([ ! -z "$variant" ] && echo ":"$variant || echo '')"
   echo -e "Building $this_image_name..."
   docker build -t $this_image_name . \
-  -f Dockerfile$([ ! -z "$variant" ] && echo "."$variant || echo '') >output$([ ! -z "$variant" ] && echo "."$variant || echo '') 2>&1
+  -f dockerfiles/$([ ! -z "$variant" ] && echo $variant"." || echo '')Dockerfile >output$([ ! -z "$variant" ] && echo "."$variant || echo '') 2>&1
   if [ $? == 0 ]; then
     docker_network="{{ (' --network='+settings['default_docker_network']+' ') if settings['default_docker_network'] else '' }}"
     list_ops=( "  Run it with: docker run ${docker_network}-d -P $this_image_name" "${list_ops[@]}")

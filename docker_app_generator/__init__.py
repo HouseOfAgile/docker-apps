@@ -1,5 +1,7 @@
 from .configurator import configure_docker_apps
 from .generator import generate_docker_app
+from .generator import cleanup_docker_app
+
 import sys
 
 

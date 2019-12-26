@@ -13,6 +13,8 @@ def load_user_config():
 
 def load_assemblies(myconfig):
     if myconfig is not []:
+        print('myconfig {}'.format(myconfig))
+
         myconfig['assemblies'] = {}
 
         print('myconfig {}'.format(myconfig))
@@ -40,7 +42,7 @@ def load_flavors_config(flavors, type='app'):
 
 def view_assemblies(config):
     for app in config['assemblies']:
-        print(settings['assemblies'][app])
+        print(settings.__dict__['assemblies'][app])
 
 
 def configure_docker_apps():

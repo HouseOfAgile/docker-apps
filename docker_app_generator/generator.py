@@ -69,15 +69,15 @@ def generate_docker_app(myconfig):
             print('base is empty')
 
         # copy files
-        assembly_path = settings.current_path + \
+        full_assembly_path = settings.current_path + \
             os.path.join(os.path.sep, settings.assembly_path)
 
-        fu.copy_files(assembly_path + '/apps/' +
+        fu.copy_files(full_assembly_path + '/apps/' +
                       app_config['name'] + '/files', path_app + '/files/' + app_config['name'])
-        fu.copy_files(assembly_path + '/bases/' +
+        fu.copy_files(full_assembly_path + '/bases/' +
                       app_config['docker_base'] + '/files', path_app + '/files/' + app_config['docker_base'])
         for flavor in app_config['docker_flavors']:
-            fu.copy_files(assembly_path + '/flavors/' + flavor + '/files',
+            fu.copy_files(full_assembly_path + '/flavors/' + flavor + '/files',
                           path_app + '/files/' + flavor)
 
         # pp.pprint(myconfig['assemblies'][app_config['name']])
@@ -105,3 +105,10 @@ def update_parameters(yaml_dict, parameters):
                         '#'+parameter+'#', parameters[parameter]) 
 
     return yaml_dict
+
+
+def cleanup_docker_app(myconfig):
+    fu.cleanup_directory(settings.apps_path)
+    fu.cleanup_directory(settings.stacks_path)
+    print('Apps and stacks path has been cleaned up')
+

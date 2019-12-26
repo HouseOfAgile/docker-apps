@@ -1,9 +1,10 @@
 import boltons.fileutils as bf
 import yaml
-import os.path
 import pkg_resources
 from distutils.dir_util import copy_tree
 import pprint
+from pathlib import Path
+import shutil
 
 from jinja2 import Environment, PackageLoader, select_autoescape
 
@@ -18,7 +19,7 @@ env = Environment(
 pp = pprint.PrettyPrinter(indent=4)
 
 def load_config_file(filename):
-    if os.path.exists(pkg_resources.resource_filename(resource_package, filename)):
+    if is_valid_file(pkg_resources.resource_filename(resource_package, filename)):
         return yaml.load(pkg_resources.resource_string(resource_package, filename))
     else:
         return []
@@ -26,9 +27,12 @@ def load_config_file(filename):
 def create_app_structure(path_app):
     bf.mkdir_p(path_app)
 
+def cleanup_directory(dir):
+    if is_valid_directory(dir):
+        shutil.rmtree(dir)
 
 def copy_files(from_path, to_path):
-    copy_tree(from_path, to_path) if os.path.exists(from_path) else None
+    copy_tree(from_path, to_path) if is_valid_file(from_path) else None
 
 
 def generate_app_dockerfile(path_app, docker_stack, docker_base, docker_flavors, variant_name=None):
@@ -66,3 +70,11 @@ def generate_app_docker_compose(path_app, service_config, service_main, service_
         service_definition=service_definition,
         settings=settings
     ).dump(path_app + '/docker-compose.yml')
+
+def is_valid_file(filename):
+    p = Path(filename)
+    return p.exists()
+
+def is_valid_directory(filename):
+    p = Path(filename)
+    return p.exists() and p.is_dir()

@@ -1,7 +1,7 @@
 main:
   docker_from: 'phusion/baseimage:_PHUSION_VERSION'
   docker_init: |
-    LABEL maintainer Meillaud Jean-Christophe (jc@houseofagile.com)
+    LABEL maintainer="Jean-Christophe Meillaud(jc@houseofagile.com)"
 
     # PHP _PHP_VERSION
     RUN export DEBIAN_FRONTEND=noninteractive && \

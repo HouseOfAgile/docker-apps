@@ -1,7 +1,7 @@
 main:
   docker_from: "houseofagile/docker-nginx-php-fpm:_PHP_VERSION"
   docker_init: |
-    MAINTAINER Meillaud Jean-Christophe (jc@houseofagile.com)
+    LABEL maintainer="Jean-Christophe Meillaud(jc@houseofagile.com)"
     RUN apt-get update
   docker_reqs: |
     ADD files/hoa-phusion-php-fpm/nginx.conf /srv/nginx-config/default-app-nginx.conf

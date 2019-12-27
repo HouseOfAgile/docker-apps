@@ -1,0 +1,14 @@
+docker_init: |
+  ENV PANTHER_NO_SANDBOX 1
+  # ENV PANTHER_CHROME_ARGUMENTS "--disable-notifications --user-data-dir=/home/developer/.config/google-chrome"
+  ENV PANTHER_CHROME_ARGUMENTS "--disable-notifications"
+docker_reqs: ''
+docker_core: |
+  RUN apt-get install -y apt-transport-https ca-certificates curl gnupg --no-install-recommends --allow-unauthenticated \
+    && curl -o /tmp/google-chrome-stable_current_amd64.deb \
+        https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
+    && (dpkg -i /tmp/google-chrome-stable_current_amd64.deb || true) \
+    && apt-get install -y -f \
+    && apt-get install -y xvfb \
+    && apt-get clean
+docker_post: ''

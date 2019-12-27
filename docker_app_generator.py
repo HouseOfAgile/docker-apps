@@ -14,6 +14,5 @@ if __name__ == "__main__":
 
     if args.delete:
         cleanup_docker_app(globalconfig)
-    else:
-        print(sys.version)
-        generate_docker_app(globalconfig)
+    # print(sys.version)
+    generate_docker_app(globalconfig)

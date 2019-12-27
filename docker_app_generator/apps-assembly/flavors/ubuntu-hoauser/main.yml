@@ -1,11 +1,12 @@
 docker_init: |
-  RUN useradd -d /home/#depl_user# -ms /bin/bash -g root -G sudo,www-data -p $(openssl passwd -1 ${DEPL_USER_PASSWORD:-#depl_user#}) #depl_user# && \
-    groupadd #depl_user# && \
-    usermod -aG #depl_user# #depl_user# && \
-    echo "#depl_user# ALL=(ALL) NOPASSWD:ALL">/etc/sudoers.d/90-cloud-init-users
   ADD config/ubuntu-hoauser/ssh-keys /srv/ssh-keys
 docker_reqs: ''
 docker_core: |
+  RUN apt-get install -y libssl-dev && \
+    useradd -d /home/#depl_user# -ms /bin/bash -g root -G sudo,www-data -p $(openssl passwd -1 ${DEPL_USER_PASSWORD:-#depl_user#}) #depl_user# && \
+    groupadd #depl_user# && \
+    usermod -aG #depl_user# #depl_user# && \
+    echo "#depl_user# ALL=(ALL) NOPASSWD:ALL">/etc/sudoers.d/90-cloud-init-users
   # Copy ssh keys if there are presents
   RUN [ -d "/srv/ssh-keys" ] && if [ "$(ls /srv/ssh-keys)" ]; then  \
     mkdir -p /home/#depl_user#/.ssh && \

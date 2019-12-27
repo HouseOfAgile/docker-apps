@@ -1,5 +1,6 @@
 ---
 parameters:
+  # those parameter are dynamically changed anywhere in the definitions, as long as the key is surrounded by # 
   depl_user: hoauser
 
 apps_inventory:
@@ -29,7 +30,6 @@ apps_inventory:
   #   docker_flavors:
   #     - 'docker-php-apps'
 
-
   - name: docker-nginx-php-fpm
     image_name: 'houseofagile/docker-nginx-php-fpm'
     version: latest
@@ -48,6 +48,18 @@ apps_inventory:
     version: latest
     docker_base: 'mysql'
     docker_flavors: []
+
+  - name: chromebot
+    image_name: 'houseofagile/docker-chromebot'
+    version: latest
+    docker_base: 'hoa-purephp-nginx-fpm'
+    docker_flavors:
+      - 'ubuntu-hoauser'
+      - 'php-composer'
+      - 'chrome-headless'
+    compose:
+    - name: mysql
+      version: latest
 
 services_inventory:
 

@@ -27,9 +27,6 @@ def load_config(name, part, type='app'):
     return fu.load_config_file(settings.assembly_path + '/' + part + '/' + name + '/' + ('main' if type == 'app' else 'service') + '.yml')
 
 
-def load_stack_config(name, type):
-    return fu.load_config_file(settings.assembly_path + '/' + type + '/' + name + '/service.yml')
-
 
 def load_flavors_config(flavors, type='app'):
     config_dict = {}

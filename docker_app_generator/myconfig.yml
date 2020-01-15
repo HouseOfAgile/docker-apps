@@ -1,6 +1,6 @@
 ---
 parameters:
-  # those parameter are dynamically changed anywhere in the definitions, as long as the key is surrounded by # 
+  # those parameter are dynamically changed anywhere in the definitions, as long as the key is surrounded by #
   depl_user: hoauser
 
 apps_inventory:
@@ -12,17 +12,17 @@ apps_inventory:
 
   - name: grav_phusion
     version: latest
-    docker_base: 'hoa-phusion-php-fpm'
+    docker_base: "hoa-phusion-php-fpm"
     docker_flavors:
-      - 'docker-php-apps'
-      - 'php-app-manager'
+      - "docker-php-apps"
+      - "php-app-manager"
 
   - name: wordpress
-    image_name: 'houseofagile/wordpress'
+    image_name: "houseofagile/wordpress"
     version: latest
-    docker_base: 'hoa-phusion-php-fpm'
+    docker_base: "hoa-phusion-php-fpm"
     docker_flavors:
-      - 'ubuntu-hoauser'
+      - "ubuntu-hoauser"
 
   # - name: sylius
   #   version: latest
@@ -31,35 +31,76 @@ apps_inventory:
   #     - 'docker-php-apps'
 
   - name: docker-nginx-php-fpm
-    image_name: 'houseofagile/docker-nginx-php-fpm'
+    image_name: "houseofagile/docker-nginx-php-fpm"
     version: latest
-    docker_base: 'hoa-phusion-baseimage'
+    docker_base: "hoa-phusion-baseimage"
     docker_flavors: []
 
   - name: docker-nginx-symfony
-    image_name: 'houseofagile/docker-nginx-symfony'
+    image_name: "houseofagile/docker-nginx-symfony"
     version: latest
-    docker_base: 'hoa-phusion-symfony'
+    docker_base: "hoa-phusion-symfony"
     docker_flavors:
-      - 'docker-php-apps'
-      - 'ubuntu-hoauser'
-      
+      - "docker-php-apps"
+      - "ubuntu-hoauser"
+
   - name: mysql
     version: latest
-    docker_base: 'mysql'
+    docker_base: "mysql"
     docker_flavors: []
 
   - name: chromebot
-    image_name: 'houseofagile/docker-chromebot'
+    image_name: "houseofagile/docker-chromebot"
     version: latest
-    docker_base: 'hoa-purephp-nginx-fpm'
+    docker_base: "hoa-purephp-nginx-fpm"
     docker_flavors:
-      - 'ubuntu-hoauser'
-      - 'php-composer'
-      - 'chrome-headless'
+      - "ubuntu-hoauser"
+      - "php-composer"
+      - "chrome-headless"
     compose:
-    - name: mysql
-      version: latest
+      main:
+        name: app
+        container_name: popolipopo
+        environment:
+          - app_log:/app/var/log
+        ports:
+        volumes:
+          - ../:/app
+          - /tmp/.X11-unix:/tmp/.X11-unix
+          - "/dev/shm:/dev/shm"
+          - app_log:/app/var/log
+          - app_uploads:/app/uploads          
+      env:
+        dev:
+          environment:
+            - DISPLAY=$DISPLAY
+          ports:
+            - 8080:80
+            - 9001:9001
+          volumes:
+            - ../:/app
+            - /tmp/.X11-unix:/tmp/.X11-unix
+            - "/dev/shm:/dev/shm"
+            - app_log:/app/var/log
+            - app_uploads:/app/uploads            
+        prod:
+          environment:
+          ports:
+            - 8080:80
+          volumes:
+            - ./instances/env.prod:/app/.env
+            - vol_app_log:/app/var/log
+            - "/dev/shm:/dev/shm"
+            - vol_app_uploads:/app/uploads            
+      sidekicks:
+        - name: db
+          image: mysql:5.7
+          volumes:
+            - app_db_vol:/var/lib/mysql
+          env_file:
+            - .env
+        - name: redis
+          image: redis:latest
 
 services_inventory:
 

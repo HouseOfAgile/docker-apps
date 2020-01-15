@@ -5,6 +5,7 @@ from distutils.dir_util import copy_tree
 import pprint
 from pathlib import Path
 import shutil
+import re
 
 from jinja2 import Environment, PackageLoader, select_autoescape
 
@@ -15,6 +16,15 @@ env = Environment(
     loader=PackageLoader("docker_app_generator", "templates"),
     autoescape=select_autoescape(["html", "xml"]),
 )
+
+def regex_match(string, p):
+    return bool(re.search(p,string))
+
+def regex_split(string, p):
+    return string[:string.rfind(p)]
+
+env.filters['regex_match'] = regex_match
+env.filters['regex_split'] = regex_split
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -58,44 +68,55 @@ def generate_app_dockerfile(
     # print('Dockerfile config {}\ndocker_base: {}\ndocker_stack: {}\n'.format(
     # path_app, docker_base, docker_stack))
 
-    template = env.get_template("Dockerfile.j2")
-    template.stream(
-        docker_base=docker_base,
-        docker_stack=docker_stack,
-        docker_flavors=docker_flavors,
-    ).dump(
+    data = {
+        "docker_base": docker_base,
+        "docker_stack": docker_stack,
+        "docker_flavors": docker_flavors,
+    }
+    generate_file(
+        data,
+        "Dockerfile",
         path_app
         + "/dockerfiles/"
         + (variant_name + "." if variant_name else "")
-        + "Dockerfile"
+        + "Dockerfile",
     )
 
 
 def generate_build_shell(path_app, docker_image_name, docker_bases, settings):
     # print('Shell config\npath_app: {}\docker_image_name: {}\docker_bases: {}\n'.format(
     # path_app, docker_image_name, docker_bases))
+    data = {
+        "docker_image_name": docker_image_name,
+        "docker_bases": docker_bases,
+        "settings": settings,
+    }
+    generate_file(data, "build.sh", path_app + "/build.sh")
 
-    template = env.get_template("build.sh.j2")
-    template.stream(
-        settings=settings,
-        docker_image_name=docker_image_name,
-        docker_bases=docker_bases,
-    ).dump(path_app + "/build.sh")
+
+def generate_docker_compose(path_app, app_config, settings):
+    data = {
+        "app_config": app_config,
+        "compose": app_config["compose"],
+        "settings": settings,
+    }
+    generate_file(data, "docker-compose.yml", path_app + "/docker-compose.yml")
+    for env in app_config["compose"]["env"]:
+        data['env'] = env
+        data['compose_env'] = app_config["compose"]["env"][env]
+        generate_file(
+            data,
+            "docker-compose.env.yml",
+            path_app + "/docker-compose." + env + ".yml",
+        )
+    generate_file(
+        data, "docker-compose.common.yml", path_app + "/docker-compose.common.yml"
+    )
 
 
-def generate_app_docker_compose(
-    path_app, service_config, service_main, service_definition, settings
-):
-    # print('compose {}\n{}\n{}\n{}\n###'.format(
-    # service_config, service_main, service_definition, myconfig))
-
-    template = env.get_template("docker-compose.yml.j2")
-    template.stream(
-        service_config=service_config,
-        service_main=service_main,
-        service_definition=service_definition,
-        settings=settings,
-    ).dump(path_app + "/docker-compose.yml")
+def generate_file(data, filename, target):
+    template = env.get_template(filename + ".j2")
+    template.stream(data).dump(target)
 
 
 def is_valid_file(filename):

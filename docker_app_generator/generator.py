@@ -66,19 +66,19 @@ def generate_docker_app(myconfig):
                     docker_flavors,
                     variant["name"] if variant["name"] != "main" else None,
                 )
-                image_variants = [
-                    v["name"] for v in docker_bases["variants"] if v["name"] != "main"
-                ]
-                image_name = (
-                    app_config["image_name"]
-                    if "image_name" in app_config
-                    else app_config["name"]
-                )
-                fu.generate_build_shell(path_app, image_name, image_variants, settings)
-                print(
-                    "Generated docker apps for %s:%s"
-                    % (app_config["name"], variant["name"])
-                )
+            image_variants = [
+                v["name"] for v in docker_bases["variants"] if v["name"] != "main"
+            ]
+            image_name = (
+                app_config["image_name"]
+                if "image_name" in app_config
+                else app_config["name"]
+            )
+            fu.generate_build_shell(path_app, image_name, image_variants, settings)
+            print(
+                "Generated docker apps for %s:%s"
+                % (app_config["name"], variant["name"])
+            )
         else:
             print("base is empty")
 
@@ -92,28 +92,33 @@ def generate_docker_app(myconfig):
         for flavor in app_config["docker_flavors"]:
             fu.copy_files(full_assembly_path, "flavors", flavor, path_app)
 
+        if 'compose' in app_config:
+            # sidekicks = app_config["compose"]['sidekicks']
+            fu.generate_docker_compose(
+                path_app, app_config, settings
+            )
         # pp.pprint(myconfig['assemblies'][app_config['name']])
 
-    for stack_config in myconfig["stacks_inventory"]:
-        stack_path = settings.stacks_path + "/" + stack_config["name"]
-        # create dir
-        fu.create_app_structure(stack_path)
-        # load service config
-        service_main = (
-            conf.load_config(stack_config["app_main_service"], "bases", "stacks")
-            if app_config["docker_base"]
-            else []
-        )
-        service_definition = conf.load_flavors_config(
-            stack_config["app_other_services"], "stacks"
-        )
-        # generate docker compose
-        print("service_main {}".format(service_main))
-        print("definition {}".format(service_definition))
-        fu.generate_app_docker_compose(
-            stack_path, stack_config, service_main, service_definition, settings
-        )
-        print("Generated docker stack for %s" % (stack_config["name"]))
+    # for stack_config in myconfig["stacks_inventory"]:
+    #     stack_path = settings.stacks_path + "/" + stack_config["name"]
+    #     # create dir
+    #     fu.create_app_structure(stack_path)
+    #     # load service config
+    #     service_main = (
+    #         conf.load_config(stack_config["app_main_service"], "bases", "stacks")
+    #         if app_config["docker_base"]
+    #         else []
+    #     )
+    #     service_definition = conf.load_flavors_config(
+    #         stack_config["app_other_services"], "stacks"
+    #     )
+    #     # generate docker compose
+    #     print("service_main {}".format(service_main))
+    #     print("definition {}".format(service_definition))
+    #     fu.generate_app_docker_compose(
+    #         stack_path, stack_config, service_main, service_definition, settings
+    #     )
+    #     print("Generated docker stack for %s" % (stack_config["name"]))
 
 
 def update_parameters(yaml_dict, parameters):

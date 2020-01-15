@@ -77,8 +77,8 @@ if ( count( \$plugins ) === 0 ) {
 }
 ENDL
     # update nginx configuration
-    cat /srv/nginx-config/default-wordpress-nginx.conf | sed "s/__project_name__/$wp_name/g;s#__project_path__#${WP_ROOT_PATH}/$wp_name#g;s/__project_hosts__/$wp_host/g"  > /etc/nginx/sites-available/project_$wp_name.conf
-    ln -s /etc/nginx/sites-available/project_$wp_name.conf /etc/nginx/sites-enabled/project_$wp_name.conf
+    cat /srv/nginx-config/default-wordpress-nginx.conf | sed "s/__project_name__/$wp_name/g;s#__project_path__#${WP_ROOT_PATH}/$wp_name#g;s/__project_hosts__/$wp_host/g"  > /etc/nginx/conf.d/project_$wp_name.conf
+    # ln -s /etc/nginx/sites-available/project_$wp_name.conf /etc/nginx/sites-enabled/project_$wp_name.conf
     service nginx reload
 
     chown -R www-data:www-data ${WP_ROOT_PATH}/$wp_name

@@ -14,6 +14,7 @@ There are apps and stacks, apps are usually some app/software that are deployed 
 This generator is based on python
 
     mkvirtualenv --python=`which python3` docker-apps
+    python docker_app_generator.py
 
 Install dependencies with
     pip install -r requirements.txt
@@ -25,6 +26,22 @@ Edit the myconfig.yml file to define your recipes for both apps and stacks, they
 
 
 Global parameter could be used in the recipes, suround your variable with #<variable>#, then the parser should replace them with the values from `myconfig.yml` file under parameters key.
+
+## Command-Line Interface
+### Delete
+
+Start from scratch, delete all previous generated apps and stacks
+
+
+    python docker_app_generator.py --delete
+    
+### Filter
+
+Filter to only specific apps/stacks
+
+    python docker_app_generator.py --filter
+
+
 License
 -------
 

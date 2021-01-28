@@ -1,2 +1,18 @@
 ports:
   - "3306:3306"
+db:
+  image: mysql:5.7
+  volumes:
+  - app_db_vol:/var/lib/mysql
+  - "/etc/timezone:/etc/timezone:ro"
+  - "/etc/localtime:/etc/localtime:ro"
+  depends_on:
+  - redis
+  env_file:
+  - .env
+
+redis:
+  image: redis:latest
+  volumes:
+  - "/etc/timezone:/etc/timezone:ro"
+  - "/etc/localtime:/etc/localtime:ro"

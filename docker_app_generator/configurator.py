@@ -1,5 +1,6 @@
 from . import fileutils as fu
 import os
+import sys
 from . import settings
 
 
@@ -13,10 +14,7 @@ def load_user_config():
 
 def load_assemblies(myconfig):
     if myconfig is not []:
-        print('myconfig {}'.format(myconfig))
-
         myconfig['assemblies'] = {}
-
         print('myconfig {}'.format(myconfig))
         for app_config in myconfig['apps_inventory']:
             myconfig['assemblies'][app_config['name']] = fu.load_config_file(
@@ -42,8 +40,13 @@ def view_assemblies(config):
         print(settings.__dict__['assemblies'][app])
 
 
-def configure_docker_apps():
+def configure_docker_apps(app_filter):
     myconfig = load_user_config()
+    specific_app = next((item for item in  myconfig['apps_inventory'] if item.get("name") and item["name"] == app_filter), None)
+    if specific_app:
+        myconfig['apps_inventory'] = [specific_app]
+        print('\n\n\nNew myconfig %s' % myconfig)
+
     load_assemblies(myconfig)
     settings.current_path = os.path.dirname(os.path.abspath(__file__))
     return myconfig

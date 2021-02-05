@@ -5,7 +5,8 @@ from .generator import cleanup_docker_app
 import sys
 
 
-def execute():
+def execute(filter_app):
     print(sys.version)
+    print(filter_app)
     globalconfig = configure_docker_apps()
     generate_docker_app(globalconfig)

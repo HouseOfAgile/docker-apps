@@ -71,3 +71,7 @@ variants:
     variant_vars:
       _PHUSION_VERSION: '0.11'
       _PHP_VERSION: '7.3'
+  - name: php7.4
+    variant_vars:
+      _PHUSION_VERSION: 'focal-1.0.0'
+      _PHP_VERSION: '7.4'

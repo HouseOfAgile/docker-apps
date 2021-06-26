@@ -16,15 +16,14 @@ main:
   docker_cmd: 'CMD ["sudo", "/sbin/my_init"]'
   docker_expose: [8080]
 main_vars:
-  _PHP_VERSION: php7.2
+  _PHP_VERSION: php7.4
 variants:
-  - name: php5
+  - name: php7.4
     variant_vars:
-      _PHP_VERSION: php5.6
-      _PHP_VERSION2: php5.8
-  - name: php7.1
+      _PHP_VERSION: php7.4
+  - name: php7.2
     variant_vars:
-      _PHP_VERSION: php7.1
+      _PHP_VERSION: php7.2
   - name: php7.3
     variant_vars:
       _PHP_VERSION: php7.3

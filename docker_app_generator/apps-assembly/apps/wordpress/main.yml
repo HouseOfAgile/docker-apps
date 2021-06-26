@@ -2,6 +2,8 @@ docker_init: |
   RUN apt-get install -y pwgen \
     mysql-client \
     composer && \
+    curl -sS https://getcomposer.org/installer | php -- --version=2.1.3 --install-dir=/usr/bin/ && \
+    mv /usr/bin/composer.phar /usr/bin/composer && \
     composer global require wp-cli/wp-cli && \
     echo 'export PATH="$PATH:$HOME/.composer/vendor/bin"' >> ~/.bashrc && \
     bash -c 'mkdir -p /srv/{nginx-config,wordpress,projects,root-sites,backups}'

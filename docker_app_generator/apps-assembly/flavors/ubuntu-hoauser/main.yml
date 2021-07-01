@@ -1,5 +1,4 @@
-docker_init: |
-  ADD config/ubuntu-hoauser/ssh-keys /srv/ssh-keys
+docker_init: ''
 docker_reqs: ''
 docker_core: |
   RUN apt-get install -y openssl
@@ -7,8 +6,5 @@ docker_core: |
     groupadd #depl_user# && \
     usermod -aG #depl_user# #depl_user# && \
     echo "#depl_user# ALL=(ALL) NOPASSWD:ALL">/etc/sudoers.d/90-cloud-init-users
-  # Copy ssh keys if there are presents
-  RUN [ -d "/srv/ssh-keys" ] && if [ "$(ls /srv/ssh-keys)" ]; then  \
-    mkdir -p /home/#depl_user#/.ssh && \
-    cp /srv/ssh-keys/* /home/#depl_user#/.ssh; fi || true
+
 docker_post: ''

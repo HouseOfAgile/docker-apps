@@ -43,7 +43,7 @@ main:
   docker_core: |
     RUN sed -i 's#%%php_fpm_sock_file%%#/run/php/php_PHP_VERSION-fpm.sock#g' /etc/nginx/sites-available/default && \
       echo "<?php\nphpinfo();">/var/www/html/index.php
-    # nginx and php-fpm7.1 service
+    # nginx and php-fpm_PHP_VERSION service
     RUN mkdir /etc/service/01_phpfpm /etc/service/02_nginx && \
       echo "#!/usr/bin/env bash\nphp-fpm_PHP_VERSION -F -c /etc/php/_PHP_VERSION/fpm" > /etc/service/01_phpfpm/run && \
       echo "#!/bin/sh\nnginx -g 'daemon off;'" > /etc/service/02_nginx/run && \

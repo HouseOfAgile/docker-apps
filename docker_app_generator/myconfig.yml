@@ -14,6 +14,7 @@ apps_inventory:
     version: latest
     docker_base: "hoa-phusion-php-fpm"
     docker_flavors:
+      - "phusion-sshkeys"
       - "docker-php-apps"
       - "php-app-manager"
 
@@ -22,6 +23,7 @@ apps_inventory:
     version: latest
     docker_base: "hoa-phusion-php-fpm"
     docker_flavors:
+      - "phusion-sshkeys"
       - "ubuntu-hoauser"
 
   # - name: sylius
@@ -41,7 +43,7 @@ apps_inventory:
     version: latest
     docker_base: "hoa-phusion-baseimage"
     docker_flavors:
-      - "docker-php-apps"
+      - "phusion-sshkeys"
       - "ubuntu-hoauser"
 
   - name: docker-nginx-symfony
@@ -49,6 +51,7 @@ apps_inventory:
     version: latest
     docker_base: "hoa-phusion-symfony"
     docker_flavors:
+      - "phusion-sshkeys"
       - "docker-php-apps"
       - "ubuntu-hoauser"
 
@@ -62,6 +65,7 @@ apps_inventory:
     version: latest
     docker_base: "hoa-purephp-nginx-fpm"
     docker_flavors:
+      - "phusion-sshkeys"
       - "ubuntu-hoauser"
       - "php-composer"
       - "chrome-headless"

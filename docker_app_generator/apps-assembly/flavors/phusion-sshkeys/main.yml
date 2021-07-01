@@ -1,0 +1,12 @@
+docker_init: |
+  RUN mkdir -p /srv/ssh-keys
+  ADD config/phusion-sshkeys/ssh-keys /srv/ssh-keys
+docker_reqs: ''
+docker_core: |
+  # Copy ssh keys if there are presents for root and depl user
+  RUN [ -d "/srv/ssh-keys" ] && if [ "$(ls /srv/ssh-keys)" ]; then  \
+    mkdir -p /home/#depl_user#/.ssh && \
+    cp /srv/ssh-keys/* /home/#depl_user#/.ssh && \
+    mkdir -p /root/.ssh && \
+    cp /srv/ssh-keys/* /root/.ssh; fi|| true
+docker_post: ''

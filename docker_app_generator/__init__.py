@@ -4,7 +4,6 @@ from .generator import cleanup_docker_app
 
 import sys
 
-
 def execute(filter_app):
     print(sys.version)
     print(filter_app)

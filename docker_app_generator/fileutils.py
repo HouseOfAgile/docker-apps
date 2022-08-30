@@ -31,7 +31,7 @@ pp = pprint.PrettyPrinter(indent=4)
 
 def load_config_file(filename):
     if is_valid_file(pkg_resources.resource_filename(resource_package, filename)):
-        return yaml.load(pkg_resources.resource_string(resource_package, filename))
+        return yaml.safe_load(pkg_resources.resource_string(resource_package, filename))
     else:
         return []
 

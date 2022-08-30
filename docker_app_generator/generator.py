@@ -136,5 +136,5 @@ def update_parameters(yaml_dict, parameters):
 def cleanup_docker_app(myconfig):
     fu.cleanup_directory(settings.apps_path)
     fu.cleanup_directory(settings.stacks_path)
-    print("Apps and stacks path has been cleaned up")
+    print("Apps and stacks path have been cleaned up")
 

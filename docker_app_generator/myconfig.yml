@@ -10,21 +10,21 @@ apps_inventory:
   #   docker_flavors:
   #     - 'docker-php-apps'
 
-  - name: grav_phusion
-    version: latest
-    docker_base: "hoa-phusion-php-fpm"
-    docker_flavors:
-      - "phusion-sshkeys"
-      - "docker-php-apps"
-      - "php-app-manager"
+  # - name: grav_phusion
+  #   version: latest
+  #   docker_base: "hoa-phusion-php-fpm"
+  #   docker_flavors:
+  #     - "phusion-sshkeys"
+  #     - "docker-php-apps"
+  #     - "php-app-manager"
 
-  - name: wordpress
-    image_name: "houseofagile/wordpress"
-    version: latest
-    docker_base: "hoa-phusion-php-fpm"
-    docker_flavors:
-      - "phusion-sshkeys"
-      - "ubuntu-hoauser"
+  # - name: wordpress
+  #   image_name: "houseofagile/wordpress"
+  #   version: latest
+  #   docker_base: "hoa-phusion-php-fpm"
+  #   docker_flavors:
+  #     - "phusion-sshkeys"
+  #     - "ubuntu-hoauser"
 
   # - name: sylius
   #   version: latest
@@ -32,87 +32,102 @@ apps_inventory:
   #   docker_flavors:
   #     - 'docker-php-apps'
 
-  - name: docker-nginx-php-fpm
-    image_name: "houseofagile/docker-nginx-php-fpm"
-    version: latest
-    docker_base: "hoa-phusion-baseimage"
-    docker_flavors: []
+  # - name: docker-nginx-php-fpm
+  #   image_name: "houseofagile/docker-nginx-php-fpm"
+  #   version: latest
+  #   docker_base: "hoa-phusion-baseimage"
+  #   docker_flavors: []
 
-  - name: docker-hoa-php
-    image_name: "houseofagile/docker-hoa-php"
+  - name: docker-nginx-php8-fpm
+    image_name: "houseofagile/docker-nginx-php8-fpm"
     version: latest
-    docker_base: "hoa-phusion-baseimage"
+    docker_base: "hoa-phusion-php8-fpm"
+    docker_flavors: 
+      - "phusion-php-apps"
+
+  - name: hoa-phusion-newbaseimage
+    image_name: "houseofagile/hoa-phusion-newbaseimage"
+    version: latest
+    docker_base: "hoa-phusion-newbaseimage"
     docker_flavors:
       - "phusion-sshkeys"
       - "ubuntu-hoauser"
 
-  - name: docker-nginx-symfony
-    image_name: "houseofagile/docker-nginx-symfony"
-    version: latest
-    docker_base: "hoa-phusion-symfony"
-    docker_flavors:
-      - "phusion-sshkeys"
-      - "docker-php-apps"
-      - "ubuntu-hoauser"
+  # - name: docker-hoa-php
+  #   image_name: "houseofagile/docker-hoa-php"
+  #   version: latest
+  #   docker_base: "hoa-phusion-baseimage"
+  #   docker_flavors:
+  #     - "phusion-sshkeys"
+  #     - "ubuntu-hoauser"
 
-  - name: mysql
-    version: latest
-    docker_base: "mysql"
-    docker_flavors: []
+  # - name: docker-nginx-symfony
+  #   image_name: "houseofagile/docker-nginx-symfony"
+  #   version: latest
+  #   docker_base: "hoa-phusion-symfony"
+  #   docker_flavors:
+  #     - "phusion-sshkeys"
+  #     - "docker-php-apps"
+  #     - "ubuntu-hoauser"
 
-  - name: chromebot
-    image_name: "houseofagile/docker-chromebot"
-    version: latest
-    docker_base: "hoa-purephp-nginx-fpm"
-    docker_flavors:
-      - "phusion-sshkeys"
-      - "ubuntu-hoauser"
-      - "php-composer"
-      - "chrome-headless"
-    compose:
-      main:
-        name: app
-        container_name: popolipopo
-        environment:
-          - app_log:/app/var/log
-        ports:
-        volumes:
-          - ../:/app
-          - /tmp/.X11-unix:/tmp/.X11-unix
-          - "/dev/shm:/dev/shm"
-          - app_log:/app/var/log
-          - app_uploads:/app/uploads          
-      env:
-        dev:
-          environment:
-            - DISPLAY=$DISPLAY
-          ports:
-            - 8080:80
-            - 9001:9001
-          volumes:
-            - ../:/app
-            - /tmp/.X11-unix:/tmp/.X11-unix
-            - "/dev/shm:/dev/shm"
-            - app_log:/app/var/log
-            - app_uploads:/app/uploads            
-        prod:
-          environment:
-          ports:
-            - 8080:80
-          volumes:
-            - ./instances/env.prod:/app/.env
-            - vol_app_log:/app/var/log
-            - "/dev/shm:/dev/shm"
-            - vol_app_uploads:/app/uploads            
-      sidekicks:
-        - name: db
-          image: mysql:5.7
-          volumes:
-            - app_db_vol:/var/lib/mysql
-          env_file:
-            - .env
-        - name: redis
-          image: redis:latest
+  # - name: mysql
+  #   version: latest
+  #   docker_base: "mysql"
+  #   docker_flavors: []
+
+  # - name: chromebot
+  #   image_name: "houseofagile/docker-chromebot"
+  #   version: latest
+  #   docker_base: "hoa-purephp-nginx-fpm"
+  #   docker_flavors:
+  #     - "phusion-sshkeys"
+  #     - "ubuntu-hoauser"
+  #     - "php-composer"
+  #     - "chrome-headless"
+  #   compose:
+  #     main:
+  #       name: app
+  #       container_name: popolipopo
+  #       environment:
+  #         - app_log:/app/var/log
+  #       ports:
+  #       volumes:
+  #         - ../:/app
+  #         - /tmp/.X11-unix:/tmp/.X11-unix
+  #         - "/dev/shm:/dev/shm"
+  #         - app_log:/app/var/log
+  #         - app_uploads:/app/uploads          
+  #     env:
+  #       dev:
+  #         environment:
+  #           - DISPLAY=$DISPLAY
+  #         ports:
+  #           - 8080:80
+  #           - 9001:9001
+  #         volumes:
+  #           - ../:/app
+  #           - /tmp/.X11-unix:/tmp/.X11-unix
+  #           - "/dev/shm:/dev/shm"
+  #           - app_log:/app/var/log
+  #           - app_uploads:/app/uploads            
+  #       prod:
+  #         environment:
+  #         ports:
+  #           - 8080:80
+  #         volumes:
+  #           - ./instances/env.prod:/app/.env
+  #           - vol_app_log:/app/var/log
+  #           - "/dev/shm:/dev/shm"
+  #           - vol_app_uploads:/app/uploads            
+  #     sidekicks:
+  #       - name: db
+  #         image: mysql:5.7
+  #         volumes:
+  #           - app_db_vol:/var/lib/mysql
+  #         env_file:
+  #           - .env
+  #       - name: redis
+  #         image: redis:latest
 
 services_inventory:
 

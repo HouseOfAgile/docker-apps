@@ -1,0 +1,10 @@
+docker_init: ''
+docker_reqs: ''
+docker_core: ''
+docker_post: |
+  RUN mkdir -p /root/projects
+  ADD config/projects /root/projects
+  ADD config/sm-config /root/.symfony-manager/sm-config
+  ADD files/phusion-php-apps/nginx-config/ /srv/nginx-config/
+  ADD files/phusion-php-apps/setup-projects.sh /etc/my_init.d/10_setup-projects.sh
+  RUN sudo chmod +x /etc/my_init.d/10_setup-projects.sh

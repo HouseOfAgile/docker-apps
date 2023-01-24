@@ -38,17 +38,32 @@ apps_inventory:
   #   docker_base: "hoa-phusion-baseimage"
   #   docker_flavors: []
 
-  - name: docker-nginx-php8-fpm
-    image_name: "houseofagile/docker-nginx-php8-fpm"
+  # - name: docker-nginx-php8-fpm
+  #   image_name: "houseofagile/docker-nginx-php8-fpm"
+  #   version: latest
+  #   docker_base: "hoa-phusion-php8-fpm"
+  #   docker_flavors: 
+  #     - "phusion-php-apps"
+
+  # - name: hoa-phusion-newbaseimage
+  #   image_name: "houseofagile/hoa-phusion-newbaseimage"
+  #   version: latest
+  #   docker_base: "hoa-phusion-newbaseimage"
+  #   docker_flavors:
+  #     - "phusion-sshkeys"
+  #     - "ubuntu-hoauser"
+
+  - name: hoa-debian-nginx-php8-fpm
+    image_name: "houseofagile/hoa-debian-nginx-php8-fpm"
     version: latest
-    docker_base: "hoa-phusion-php8-fpm"
+    docker_base: "hoa-debian-php8-fpm"
     docker_flavors: 
       - "phusion-php-apps"
 
-  - name: hoa-phusion-newbaseimage
-    image_name: "houseofagile/hoa-phusion-newbaseimage"
+  - name: hoa-debian-baseimage
+    image_name: "houseofagile/hoa-debian-baseimage"
     version: latest
-    docker_base: "hoa-phusion-newbaseimage"
+    docker_base: "hoa-debian-baseimage"
     docker_flavors:
       - "phusion-sshkeys"
       - "ubuntu-hoauser"

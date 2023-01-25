@@ -116,5 +116,6 @@ dmypy.json
 
 
 # temp hoa add
+current-sample/*
 apps-universe/*
 stacks-universe/*

@@ -8,14 +8,14 @@ apps_inventory:
   #   version: latest
   #   docker_base: 'phusion-docker-php-fpm'
   #   docker_flavors:
-  #     - 'docker-php-apps'
+  #     - 'phusion-php-apps'
 
   # - name: grav_phusion
   #   version: latest
   #   docker_base: "hoa-phusion-php-fpm"
   #   docker_flavors:
   #     - "phusion-sshkeys"
-  #     - "docker-php-apps"
+  #     - "phusion-php-apps"
   #     - "php-app-manager"
 
   # - name: wordpress
@@ -30,7 +30,7 @@ apps_inventory:
   #   version: latest
   #   docker_base: 'hoa-phusion-php-fpm'
   #   docker_flavors:
-  #     - 'docker-php-apps'
+  #     - 'phusion-php-apps'
 
   # - name: docker-nginx-php-fpm
   #   image_name: "houseofagile/docker-nginx-php-fpm"
@@ -58,7 +58,7 @@ apps_inventory:
     version: latest
     docker_base: "hoa-debian-php8-fpm"
     docker_flavors: 
-      - "phusion-php-apps"
+      - "docker-php-apps"
 
   - name: hoa-debian-baseimage
     image_name: "houseofagile/hoa-debian-baseimage"
@@ -82,7 +82,7 @@ apps_inventory:
   #   docker_base: "hoa-phusion-symfony"
   #   docker_flavors:
   #     - "phusion-sshkeys"
-  #     - "docker-php-apps"
+  #     - "phusion-php-apps"
   #     - "ubuntu-hoauser"
 
   # - name: mysql
